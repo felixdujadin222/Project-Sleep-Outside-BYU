@@ -2,11 +2,13 @@ import { resolve } from "path";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  base: "./",
+  // Set explicit repo base path for GitHub Pages
+  base: "/Project-Sleep-Outside-BYU/",
   root: "src/",
 
   build: {
     outDir: "../dist",
+    emptyOutDir: true,
     rollupOptions: {
       input: {
         main: resolve(__dirname, "src/index.html"),
