@@ -27,31 +27,30 @@ export function getParam(param) {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const product = urlParams.get(param);
-  return product
+  return product;
 }
 
-export function renderListWithTemplate(template, parentElement, list, position = "afterbegin", clear = false) {
-  const htmlStrings = list.map(template);
+// Helper function to format image paths cleanly across all subpages on GitHub Pages
+export function formatImagePath(path) {
+  if (!path) return "";
+  // Strip relative dots (./ or ../) if present
+  const cleanPath = path.replace(/^(\.\/|\.\.\/)+/, "");
+  return `${import.meta.env.BASE_URL}${cleanPath}`;
+}
+
+export function renderListWithTemplate(
+  templateFn,
+  parentElement,
+  list,
+  position = "afterbegin",
+  clear = false
+) {
+  const htmlStrings = list.map(templateFn);
   // if clear is true we need to clear out the contents of the parent.
   if (clear) {
     parentElement.innerHTML = "";
   }
   parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
-}
-
-
-function updateCartBadge() {
-  const cart = getLocalStorage("so-cart") || [];
-  const badge = document.querySelector(".cart-count");
-
-  if (!badge) return;
-
-  if (cart.length > 0) {
-    badge.textContent = cart.length;
-    badge.style.display = "flex";
-  } else {
-    badge.style.display = "none";
-  }
 }
 
 export function updateCartCount() {

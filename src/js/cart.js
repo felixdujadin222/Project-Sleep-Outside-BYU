@@ -1,4 +1,9 @@
-import { getLocalStorage, setLocalStorage, updateCartCount } from "./utils.mjs";
+import {
+  getLocalStorage,
+  setLocalStorage,
+  updateCartCount,
+  formatImagePath,
+} from "./utils.mjs";
 
 function renderCartContents() {
   const cartItems = getLocalStorage("so-cart") || [];
@@ -15,7 +20,8 @@ function renderCartContents() {
     cartFooter.classList.remove("hide");
   } else {
     // Hide footer and clear list when cart is empty
-    document.querySelector(".product-list").innerHTML = "<p>Your cart is empty.</p>";
+    document.querySelector(".product-list").innerHTML =
+      "<p>Your cart is empty.</p>";
     const cartFooter = document.querySelector(".cart-footer");
     if (cartFooter) {
       cartFooter.classList.add("hide");
@@ -27,13 +33,16 @@ function renderCartContents() {
 }
 
 function cartItemTemplate(item) {
+  // Format image path relative to GitHub Pages base URL
+  const imageSrc = formatImagePath(item.Image);
+
   const newItem = `<li class="cart-card divider">
   <!-- "X" button to remove item -->
   <span class="cart-card__remove" data-id="${item.Id}" title="Remove item" role="button">X</span>
 
   <a href="#" class="cart-card__image">
     <img
-      src="${item.Image}"
+      src="${imageSrc}"
       alt="${item.Name}"
     />
   </a>
@@ -51,7 +60,7 @@ function cartItemTemplate(item) {
 // Function to handle removing single item
 function removeFromCart(id) {
   let cartItems = getLocalStorage("so-cart") || [];
-  
+
   // Find index of first matching item to safely delete one instance at a time
   const itemIndex = cartItems.findIndex((item) => item.Id === id);
 
