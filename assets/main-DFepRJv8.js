@@ -1,4 +1,4 @@
-import{r as m,u as h}from"./utils-l-32sxlG.js";import{P as p}from"./ProductData-CKx_ZSv7.js";function g(t){const s=`/Project-Sleep-Outside-BYU/${t.Image.replace(/^(\.\.\/|\.\/|\/)/,"")}`;return`<li class="product-card">
+import{r as m,u as h}from"./utils-C5HVjJMU.js";import{P as p}from"./ProductData-CKx_ZSv7.js";function g(t){const s=`/Project-Sleep-Outside-BYU/${t.Image.replace(/^(\.\.\/|\.\/|\/)/,"")}`;return`<li class="product-card">
     <a href="/Project-Sleep-Outside-BYU/product_pages/index.html?product=${t.Id}">
       <img src="${s}" alt="Image of ${t.Name}">
       <h3 class="card__brand">${t.Brand.Name}</h3>
