@@ -1,4 +1,4 @@
-import{r as p,g as f,s as y,u as b}from"./utils-gDiMUZEg.js";import{P as w}from"./ProductData-BUDOBXeM.js";function L(s){const e=`/${s.Image.replace(/^(\.\.\/|\.\/|\/)/,"")}`;return`<li class="product-card" style="position: relative;">
+import{r as p,g as f,s as y,u as b}from"./utils-u5oOr5gz.js";import{P as w}from"./ProductData-CKx_ZSv7.js";function L(s){const e=`/Project-Sleep-Outside-BYU/${s.Image.replace(/^(\.\.\/|\.\/|\/)/,"")}`;return`<li class="product-card" style="position: relative;">
     <button 
       class="wishlist-btn" 
       data-id="${s.Id}" 
@@ -7,7 +7,7 @@ import{r as p,g as f,s as y,u as b}from"./utils-gDiMUZEg.js";import{P as w}from"
     >
       ♡
     </button>
-    <a href="/product_pages/index.html?product=${s.Id}">
+    <a href="/Project-Sleep-Outside-BYU/product_pages/index.html?product=${s.Id}">
       <img src="${e}" alt="Image of ${s.Name}">
       <h3 class="card__brand">${s.Brand.Name}</h3>
       <h2 class="card__name">${s.NameWithoutBrand}</h2>
