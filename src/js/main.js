@@ -67,3 +67,18 @@ if (listElement) {
     }
   });
 }
+
+export function animateCartIcon() {
+  // Target the cart container from your header layout
+  const cartIcon = document.querySelector(".cart a") || document.querySelector(".cart");
+
+  if (!cartIcon) return;
+
+  // Add the animation class
+  cartIcon.classList.add("cart-animate");
+
+  // Remove class after 500ms so it can trigger again on subsequent clicks
+  setTimeout(() => {
+    cartIcon.classList.remove("cart-animate");
+  }, 500);
+}

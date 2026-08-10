@@ -3,11 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sleep Outside | Cart</title>
+    <title>Sleep Outside | Order Success</title>
 
-    <!-- Relative asset pathing for nested folder -->
     <link rel="stylesheet" href="../css/style.css" />
-    <script src="../js/cart.js" type="module"></script>
+    <script src="../js/success.js" type="module"></script>
   </head>
 
   <body>
@@ -32,25 +31,30 @@
       </div>
     </header>
 
-    <main class="divider">
-      <section class="products">
-        <h2>My Cart</h2>
-        <ul class="product-list"></ul>
-      </section>
-
-      <!-- Cart Footer containing total and Checkout navigation button -->
-      <div class="cart-footer hide" style="margin-top: 1.5rem; text-align: right; padding: 1rem;">
-        <p class="cart-total" style="font-size: 1.2rem; font-weight: bold;">
-          Total: <span id="cart-total-amount">$0.00</span>
+    <main class="divider" style="max-width: 600px; margin: 2rem auto; text-align: center; padding: 0 1rem;">
+      <div style="background-color: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 8px; padding: 2rem; margin-bottom: 2rem;">
+        <span style="font-size: 3rem; color: #2e7d32; display: block; margin-bottom: 0.5rem;">🎉</span>
+        <h2 style="color: #2e7d32; margin-top: 0;">Order Confirmed!</h2>
+        <p style="font-size: 1.1rem; color: #333; margin-bottom: 0;">
+          Thank you for your order. We are preparing your outdoor gear for shipment right now!
         </p>
-        <a href="../checkout/index.html" style="text-decoration: none;">
-          <button id="checkout-btn" type="button" style="margin-top: 1rem;">Proceed to Checkout</button>
-        </a>
       </div>
+
+      <div style="background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; padding: 1.5rem; text-align: left; margin-bottom: 2rem;">
+        <h3 style="margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 0.5rem;">Order Details</h3>
+        <p style="margin: 0.5rem 0;"><strong>Order Reference:</strong> <span id="order-ref">#SO-LOAD-ERR</span></p>
+        <p style="margin: 0.5rem 0;"><strong>Date:</strong> <span id="order-date">--</span></p>
+        <p style="margin: 0.5rem 0;"><strong>Status:</strong> Processing for Shipment</p>
+      </div>
+
+      <a href="../index.html" style="display: inline-block; padding: 0.8rem 1.8rem; background-color: #303030; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">
+        Continue Shopping
+      </a>
     </main>
 
     <footer>
-      &copy;2025 ⛺ SleepOutside ⛺ WDD 330 ⛺ BYU-Idaho for BYU-Pathway Worldwide Online
+      &copy;2025 ⛺ SleepOutside ⛺ WDD 330 ⛺ BYU-Idaho for BYU-Pathway
+      Worldwide Online
     </footer>
   </body>
 </html>

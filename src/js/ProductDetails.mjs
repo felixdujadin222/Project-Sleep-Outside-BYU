@@ -1,4 +1,9 @@
-import { getLocalStorage, setLocalStorage, updateCartCount } from "./utils.mjs";
+import {
+  getLocalStorage,
+  setLocalStorage,
+  updateCartCount,
+  animateCartIcon,
+} from "./utils.mjs";
 
 // Helper function to format image paths cleanly for GitHub Pages
 function formatImagePath(path) {
@@ -6,6 +11,23 @@ function formatImagePath(path) {
   // Strip relative dots (./ or ../) if present
   const cleanPath = path.replace(/^(\.\/|\.\.\/)+/, "");
   return `${import.meta.env.BASE_URL}${cleanPath}`;
+}
+
+function productDetailsTemplate(product) {
+  document.querySelector("h2").textContent = product.Brand.Name;
+  document.querySelector("h3").textContent = product.NameWithoutBrand;
+
+  const productImage = document.getElementById("productImage");
+  productImage.src = formatImagePath(product.Image);
+  productImage.alt = product.NameWithoutBrand;
+
+  document.getElementById("productPrice").textContent = `$${product.FinalPrice}`;
+  document.getElementById("productColor").textContent =
+    product.Colors?.[0]?.ColorName || "Default Color";
+  document.getElementById("productDesc").innerHTML =
+    product.DescriptionHtmlSimple;
+
+  document.getElementById("addToCart").dataset.id = product.Id;
 }
 
 export default class ProductDetails {
@@ -16,12 +38,13 @@ export default class ProductDetails {
   }
 
   async init() {
-    // use the datasource to get the details for the current product. findProductById will return a promise! use await or .then() to process it
+    // Fetch product details using the datasource
     this.product = await this.dataSource.findProductById(this.productId);
-    // the product details are needed before rendering the HTML
+
+    // Render HTML details
     this.renderProductDetails();
-    // once the HTML is rendered, add a listener to the Add to Cart button
-    // Notice the .bind(this). This callback will not work if the bind(this) is missing. Review the readings from this week on 'this' to understand why.
+
+    // Bind event listener to the Add to Cart button
     document
       .getElementById("addToCart")
       .addEventListener("click", this.addProductToCart.bind(this));
@@ -31,27 +54,15 @@ export default class ProductDetails {
     const cartItems = getLocalStorage("so-cart") || [];
     cartItems.push(this.product);
     setLocalStorage("so-cart", cartItems);
-    
+
+    // Update superscript badge count
     updateCartCount();
+
+    // Trigger backpack icon bounce animation
+    animateCartIcon();
   }
 
   renderProductDetails() {
     productDetailsTemplate(this.product);
   }
-}
-
-function productDetailsTemplate(product) {
-  document.querySelector("h2").textContent = product.Brand.Name;
-  document.querySelector("h3").textContent = product.NameWithoutBrand;
-
-  const productImage = document.getElementById("productImage");
-  // ✅ FIX: Pass product.Image through formatImagePath!
-  productImage.src = formatImagePath(product.Image);
-  productImage.alt = product.NameWithoutBrand;
-
-  document.getElementById("productPrice").textContent = `$${product.FinalPrice}`;
-  document.getElementById("productColor").textContent = product.Colors[0].ColorName;
-  document.getElementById("productDesc").innerHTML = product.DescriptionHtmlSimple;
-
-  document.getElementById("addToCart").dataset.id = product.Id;
 }
