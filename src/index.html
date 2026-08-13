@@ -1,19 +1,21 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sleep Outside | Home</title>
 
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/style.css">
     <script src="js/main.js" type="module"></script>
   </head>
 
   <body>
     <header class="divider">
       <div class="logo">
-        <img src="images/noun_Tent_2517.svg" alt="tent image for logo" />
-        <a href="index.html"> Sleep<span class="highlight">Outside</span></a>
+        <img src="images/noun_Tent_2517.svg" alt="tent image for logo">
+        <h1 class="logo-title">
+          <a href="index.html">Sleep<span class="highlight">Outside</span></a>
+        </h1>
       </div>
 
       <div class="cart">
@@ -48,10 +50,11 @@
         <img
           src="images/banner-sm.jpg"
           srcset="images/banner-sm.jpg 500w, images/banner.jpg 1000w"
+          sizes="(max-width: 600px) 500px, 1000px"
           alt="image of a high mountain lake"
-        />
+        >
         <div class="logo logo--square">
-          <img src="images/noun_Tent_2517.svg" alt="tent image for logo" />
+          <img src="images/noun_Tent_2517.svg" alt="tent image for logo">
           <div>Sleep<span class="highlight">Outside</span></div>
         </div>
         <div class="mission">
@@ -71,7 +74,7 @@
             type="text" 
             id="product-search" 
             placeholder="Search tents, brands, or gear..." 
-          />
+          >
         </div>
 
         <ul class="product-list"></ul>
