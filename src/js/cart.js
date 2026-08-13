@@ -12,12 +12,20 @@ function renderCartContents() {
     const htmlItems = cartItems.map((item) => cartItemTemplate(item));
     document.querySelector(".product-list").innerHTML = htmlItems.join("");
 
-    // Calculate total using FinalPrice
-    const total = cartItems.reduce((sum, item) => sum + item.FinalPrice, 0);
+    // Calculate total using FinalPrice multiplied by quantity
+    const total = cartItems.reduce((sum, item) => {
+      const qty = item.Quantity || 1;
+      return sum + item.FinalPrice * qty;
+    }, 0);
 
     const cartFooter = document.querySelector(".cart-footer");
-    document.querySelector(".cart-total").innerHTML = `Total: $${total.toFixed(2)}`;
-    cartFooter.classList.remove("hide");
+    const cartTotalEl = document.querySelector(".cart-total");
+    if (cartTotalEl) {
+      cartTotalEl.innerHTML = `Total: $${total.toFixed(2)}`;
+    }
+    if (cartFooter) {
+      cartFooter.classList.remove("hide");
+    }
   } else {
     // Hide footer and clear list when cart is empty
     document.querySelector(".product-list").innerHTML =
@@ -33,8 +41,17 @@ function renderCartContents() {
 }
 
 function cartItemTemplate(item) {
-  // Format image path relative to GitHub Pages base URL
-  const imageSrc = formatImagePath(item.Image);
+  // Extract image path cleanly across API schema variations (PrimaryMedium/PrimaryLarge or Image)
+  const rawImagePath =
+    item.Images?.PrimaryMedium ||
+    item.Images?.PrimaryLarge ||
+    item.Image ||
+    "";
+
+  // Format image path relative to root or base URL
+  const imageSrc = formatImagePath(rawImagePath);
+  const qty = item.Quantity || 1;
+  const colorName = item.Colors?.[0]?.ColorName || "Default Color";
 
   const newItem = `<li class="cart-card divider">
   <!-- "X" button to remove item -->
@@ -49,23 +66,27 @@ function cartItemTemplate(item) {
   <a href="#">
     <h2 class="card__name">${item.Name}</h2>
   </a>
-  <p class="cart-card__color">${item.Colors[0].ColorName}</p>
-  <p class="cart-card__quantity">qty: 1</p>
+  <p class="cart-card__color">${colorName}</p>
+  <p class="cart-card__quantity">qty: ${qty}</p>
   <p class="cart-card__price">$${item.FinalPrice}</p>
 </li>`;
 
   return newItem;
 }
 
-// Function to handle removing single item
+// Function to handle removing single item instance or decrementing quantity
 function removeFromCart(id) {
   let cartItems = getLocalStorage("so-cart") || [];
 
-  // Find index of first matching item to safely delete one instance at a time
   const itemIndex = cartItems.findIndex((item) => item.Id === id);
 
   if (itemIndex !== -1) {
-    cartItems.splice(itemIndex, 1);
+    if (cartItems[itemIndex].Quantity && cartItems[itemIndex].Quantity > 1) {
+      cartItems[itemIndex].Quantity -= 1;
+    } else {
+      cartItems.splice(itemIndex, 1);
+    }
+
     setLocalStorage("so-cart", cartItems);
     renderCartContents(); // Re-render contents & update total
   }
@@ -84,3 +105,15 @@ if (productList) {
 
 // Initial render call
 renderCartContents();
+
+// Back button event listener
+const backBtn = document.getElementById("backBtn");
+if (backBtn) {
+  backBtn.addEventListener("click", () => {
+    if (document.referrer && window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = "../index.html";
+    }
+  });
+}

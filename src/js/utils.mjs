@@ -37,13 +37,21 @@ export function getParam(param) {
   return urlParams.get(param);
 }
 
-// Helper function to format image paths cleanly with safe base URL checks
+// Helper function to format image paths cleanly across local JSON and remote backend API
 export function formatImagePath(path) {
   if (!path) return "";
-  const cleanPath = path.replace(/^(\.\/|\.\.\/)+/, "");
-  
+
+  // Return absolute external URLs as-is
+  if (path.startsWith("http://") || path.startsWith("https://")) {
+    return path;
+  }
+
+  // Strip all leading slashes, dot-slashes, and dot-dot-slashes
+  const cleanPath = path.replace(/^(\.\/|\.\.\/|\/)+/, "");
+
   // Safely retrieve BASE_URL or fallback to root "/"
-  const rawBaseUrl = (import.meta && import.meta.env && import.meta.env.BASE_URL) || "/";
+  const rawBaseUrl =
+    (import.meta && import.meta.env && import.meta.env.BASE_URL) || "/";
   const baseUrl = rawBaseUrl.endsWith("/") ? rawBaseUrl : `${rawBaseUrl}/`;
 
   return `${baseUrl}${cleanPath}`;
@@ -58,7 +66,7 @@ export function renderListWithTemplate(
   clear = false
 ) {
   if (!parentElement || !Array.isArray(list)) return;
-  
+
   const htmlStrings = list.map(templateFn);
   if (clear) {
     parentElement.innerHTML = "";
@@ -107,16 +115,42 @@ export function alertMessage(message, scroll = true) {
 
 // Trigger backpack icon bounce animation
 export function animateCartIcon() {
-  const cartIcon = document.querySelector(".cart a svg, .cart svg, .cart a");
+  const cartIcon =
+    document.querySelector(".cart a") ||
+    document.querySelector(".cart svg") ||
+    document.querySelector(".cart");
+
   if (cartIcon) {
+    // Reset state
     cartIcon.classList.remove("cart-animate");
-    // Trigger reflow to restart CSS animation if clicked rapidly
-    void cartIcon.offsetWidth; 
+
+    // Force DOM reflow to restart CSS animation keyframes
+    void cartIcon.offsetWidth;
+
+    // Apply animation class
     cartIcon.classList.add("cart-animate");
 
-    // Clean up class after animation ends
+    // Clean up animation class after 600ms matching CSS transition
     setTimeout(() => {
       cartIcon.classList.remove("cart-animate");
     }, 600);
+  }
+}
+
+// API #2: Frankfurter Currency Exchange API (Secondary External API)
+export async function getCurrencyRate(targetCurrency = "EUR") {
+  try {
+    const response = await fetch(
+      `https://api.frankfurter.app/latest?from=USD&to=${targetCurrency}`
+    );
+    if (response.ok) {
+      const data = await response.json();
+      return data.rates[targetCurrency];
+    } else {
+      throw new Error("Failed to fetch rate");
+    }
+  } catch (error) {
+    console.error("Secondary API Error:", error);
+    return 1; // Fallback 1:1 rate if offline
   }
 }

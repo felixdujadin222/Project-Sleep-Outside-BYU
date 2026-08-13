@@ -3,6 +3,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   root: "src/",
+  base: "/Project-Sleep-Outside-BYU/",
   build: {
     outDir: "../dist",
     emptyOutDir: true,
